@@ -1,4 +1,4 @@
-package com.Electron.Electron.controller;
+package com.Electron.Electron.service;
 
 import com.Electron.Electron.model.User;
 
@@ -9,6 +9,7 @@ public interface IApiService {
     User update(Long id,User user);
     User findUser(Long id);
     User findUser(User user);
+    User findUser(String username);
     Iterable<User> findAll();
     User create(User user);
 }

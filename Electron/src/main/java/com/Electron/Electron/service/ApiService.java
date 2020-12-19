@@ -1,21 +1,26 @@
-package com.Electron.Electron.controller;
+package com.Electron.Electron.service;
 
 import com.Electron.Electron.Exception.BadRequest;
 import com.Electron.Electron.jpa.UserJpa;
 import com.Electron.Electron.model.Role;
 import com.Electron.Electron.model.RoleEnum;
 import com.Electron.Electron.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
-public class ApiService implements IApiService{
-    @Autowired
-    private UserJpa userJpa;
+public class ApiService implements IApiService {
+
+    private  final UserJpa userJpa;
+    private  final IValidateService validateService;
+
+    public ApiService(UserJpa userJpa, IValidateService validateService) {
+        this.userJpa = userJpa;
+        this.validateService = validateService;
+    }
+
     @Override
     public void delete(Long id) {
         Optional<User> userById = userJpa.findById(id);
@@ -59,14 +64,20 @@ public class ApiService implements IApiService{
     }
 
     @Override
+    public User findUser(String username) {
+        if(username == null || username.isEmpty())
+            throw new BadRequest("username is empty");
+        return userJpa.findByUsername(username);
+    }
+
+    @Override
     public Iterable<User> findAll() {
         return userJpa.findAll();
     }
 
     @Override
     public User create(User user) {
-        if(user.getUsername()==null || user.getUsername().isEmpty()) throw new BadRequest("Username is empty");
-        if(user.getPassword()==null || user.getPassword().isEmpty()) throw new BadRequest("Password is empty");
+        if(!validateService.validateUser(user)) throw new BadRequest("Validation failed");
         User userByUsername = userJpa.findByUsername(user.getUsername());
         if(userByUsername!=null) throw new BadRequest("User already exists");
         if(user.getRoles()==null) user.setRoles(Collections.singleton(new Role(RoleEnum.USER)));

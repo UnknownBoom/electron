@@ -1,43 +1,43 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+  <q-layout view="hHh lpR fFf">
+
+    <q-header elevated class="bg-dark text-white " >
       <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="leftDrawerOpen = !leftDrawerOpen"
-        />
+        <q-btn dense flat round icon="menu" @click="left = !left" />
 
         <q-toolbar-title>
-          Quasar App
+          <q-avatar>
+            <q-icon name="devices"></q-icon>
+          </q-avatar>
+          My App
         </q-toolbar-title>
+        <q-space></q-space>
+        <div>
+          <q-btn icon="person" size="md" class="border" round>
+          </q-btn>
+        </div>
 
-        <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-      content-class="bg-grey-1"
-    >
+    <q-drawer show-if-above v-model="left" side="left" bordered dark :width="175">
+      <q-item-label header class="text-white">My App</q-item-label>
+      <q-separator dark></q-separator>
       <q-list>
-        <q-item-label
-          header
-          class="text-grey-8"
-        >
-          Essential Links
-        </q-item-label>
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
+        <q-item clickable to="login">
+          <q-item-section avatar><q-icon name="login"/></q-item-section>
+          <q-item-section>Login</q-item-section>
+        </q-item>
+        <q-item>
+          <q-item-section avatar><q-icon name="logout"/></q-item-section>
+          <q-item-section>Logout</q-item-section>
+        </q-item>
+        <q-item>
+          <q-item-section avatar><q-icon name="home"/></q-item-section>
+          <q-item-section>Main</q-item-section>
+        </q-item>
       </q-list>
+      <q-separator dark></q-separator>
     </q-drawer>
 
     <q-page-container>
@@ -47,61 +47,21 @@
 </template>
 
 <script>
-import EssentialLink from 'components/EssentialLink.vue'
-
-const linksData = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
-];
-
-export default {
-  name: 'MainLayout',
-  components: { EssentialLink },
-  data () {
-    return {
-      leftDrawerOpen: false,
-      essentialLinks: linksData
+  export default {
+    data () {
+      return {
+        left: false
+      }
     }
   }
-}
 </script>
+<style>
+  .q-layout{
+    background-color: rgba(35, 37, 38, 1);
+  }
+  .border{
+    border-width: 1px !important;
+    border-color: #606266 !important;
+    border-style: solid !important;
+  }
+</style>
