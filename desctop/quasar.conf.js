@@ -75,7 +75,7 @@ module.exports = function (/* ctx */) {
         '/api/*': 'http://localhost:8081',
         '/auth/*': 'http://localhost:8081',
         '/auth': 'http://localhost:8081',
-        '/registration/*': 'http://localhost:8081',
+        '/registrate/*': 'http://localhost:8081',
         '/registration': 'http://localhost:8081'
       }
     },

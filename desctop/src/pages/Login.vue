@@ -5,6 +5,14 @@
         <div class="full-width column wrap justify-start items-center content-center ">
           <q-form class="q-gutter-y-md q-pa-md bg-dark q-mt-lg form-size full-width"
                   @submit="submit">
+            <vue-recaptcha
+              ref="invisibleRecaptcha"
+              size="invisible"
+              @verify="onVerify"
+              :sitekey="sitekey"
+              @error="onError"
+            >
+            </vue-recaptcha>
             <div class="col text-center text-white text-h4" >Authorization</div>
             <div class="col">
               <q-input
@@ -28,7 +36,7 @@
               />
             </div>
             <div class="col">
-              <q-btn to="/registration" class="q-ml-auto  text-blue-grey-2 " flat >Registration</q-btn>
+              <q-btn to="/signup" class="q-ml-auto  text-blue-grey-2 " flat >Registration</q-btn>
               <q-btn label="Submit" type="submit" class="float-right" color="grey-9"/>
             </div>
             <div class="col">
@@ -44,28 +52,40 @@
 </template>
 
 <script>
+  import VueRecaptcha from 'vue-recaptcha'
   export default {
     name: "Login",
+    components:{ VueRecaptcha},
     data(){
       return{
         user:{
           username:'',
           password:''
         },
-        error:''
+        error:'',
+        sitekey:'6LdnRg4aAAAAAKlh9vYmhAzSsqI3e4u0lLVVU5re'
       }
     },
     methods:{
-      submit(){
+      onVerify(response){
+        this.$refs.invisibleRecaptcha.reset()
         this.$axios.post('/auth',this.user)
           .then(t=>{
             this.error = ''
             console.log(t)
+            this.$router.push("/")
           })
           .catch(e=>{
             console.log(e)
             this.error = e.response.data.message
           })
+      },
+      onError(){
+        this.error = 'Captcha failed'
+        this.$refs.invisibleRecaptcha.reset()
+      },
+      submit(){
+        this.$refs.invisibleRecaptcha.execute()
       }
     }
   }
