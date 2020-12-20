@@ -1,8 +1,7 @@
 package com.Electron.Electron.service;
 
 import com.Electron.Electron.Exception.BadRequest;
-import com.Electron.Electron.Exception.NotFoundException;
-import com.Electron.Electron.jpa.UserJpa;
+import com.Electron.Electron.Exception.UnauthorizedException;
 import com.Electron.Electron.model.User;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +24,8 @@ public class AuthService implements IAuthService {
     public User auth(User user) {
         if(!validateService.validateUser(user)) throw new BadRequest("validation failed");
         User userByUsername = apiService.findUser(user);
-        if(userByUsername==null) throw new NotFoundException("User not exists");
-        if(checkUser(userByUsername,user)) throw new BadRequest("Validation failed");
+        if(userByUsername==null) throw new UnauthorizedException("User not exists");
+        if(!checkUser(userByUsername,user)) throw new BadRequest("Validation failed");
         return userByUsername;
     }
 }

@@ -5,7 +5,7 @@
         <div class="full-width column wrap justify-start items-center content-center ">
           <q-form class="q-gutter-y-md q-pa-md bg-dark q-mt-lg form-size full-width"
                   @submit="submit">
-            <div class="col text-center text-white text-h4" >Authorization</div>
+            <div class="col text-center text-white text-h4" >Registration</div>
             <div class="col">
               <q-input
                 filled
@@ -28,7 +28,7 @@
               />
             </div>
             <div class="col">
-              <q-btn to="/registration" class="q-ml-auto  text-blue-grey-2 " flat >Registration</q-btn>
+              <q-btn to="/login" class="q-ml-auto  text-blue-grey-2 " flat >Login</q-btn>
               <q-btn label="Submit" type="submit" class="float-right" color="grey-9"/>
             </div>
             <div class="col">
@@ -45,7 +45,7 @@
 
 <script>
   export default {
-    name: "Login",
+    name: "Registration",
     data(){
       return{
         user:{
@@ -57,7 +57,7 @@
     },
     methods:{
       submit(){
-        this.$axios.post('/auth',this.user)
+        this.$axios.post('/registration',this.user)
           .then(t=>{
             this.error = ''
             console.log(t)

@@ -72,7 +72,11 @@ module.exports = function (/* ctx */) {
       port: 8082,
       open: true, // opens browser window automatically
       proxy: {
-        '/api': 'http://localhost:8081'
+        '/api/*': 'http://localhost:8081',
+        '/auth/*': 'http://localhost:8081',
+        '/auth': 'http://localhost:8081',
+        '/registration/*': 'http://localhost:8081',
+        '/registration': 'http://localhost:8081'
       }
     },
 
