@@ -18,7 +18,6 @@ module.exports = function (/* ctx */) {
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/boot-files
     boot: [
-
       'axios',
     ],
 
@@ -70,13 +69,12 @@ module.exports = function (/* ctx */) {
     devServer: {
       https: false,
       port: 8082,
-      open: true, // opens browser window automatically
+      open: true,
       proxy: {
-        '/api/*': 'http://localhost:8081',
-        '/auth/*': 'http://localhost:8081',
-        '/auth': 'http://localhost:8081',
-        '/registrate/*': 'http://localhost:8081',
-        '/registration': 'http://localhost:8081'
+        '/api': {
+          target: 'http://localhost:8081',
+          pathRewrite: {'^/api' : ''}
+        }
       }
     },
 

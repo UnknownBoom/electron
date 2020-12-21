@@ -69,16 +69,7 @@
     methods:{
       onVerify(response){
         this.$refs.invisibleRecaptcha.reset()
-        this.$axios.post('/registration',this.user)
-          .then(t=>{
-            this.error = ''
-            console.log(t)
-            this.$router.push("/")
-          })
-          .catch(e=>{
-            console.log(e)
-            this.error = e.response.data.message
-          })
+
       },
       onError(){
         this.error = 'Captcha failed'

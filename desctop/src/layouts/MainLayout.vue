@@ -30,12 +30,16 @@
 
 <script>
   import Drawer from "components/Drawer";
+  // import {mapGetters} from 'vuex'
   export default {
     components: {Drawer},
     data () {
       return {
         left: false
       }
+    },
+    computed:{
+      // ...mapGetters(['isLogined'])
     }
   }
 </script>

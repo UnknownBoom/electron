@@ -22,10 +22,10 @@ public class AuthService implements IAuthService {
 
     @Override
     public User auth(User user) {
-        if(!validateService.validateUser(user)) throw new BadRequest("validation failed");
+        if(!validateService.validateUser(user)) throw new UnauthorizedException("validation failed");
         User userByUsername = apiService.findUser(user);
-        if(userByUsername==null) throw new UnauthorizedException("User not exists");
-        if(!checkUser(userByUsername,user)) throw new BadRequest("Validation failed");
+        if(userByUsername==null) throw new BadRequest("User not exists");
+        if(!checkUser(userByUsername,user)) throw new UnauthorizedException("Validation failed");
         return userByUsername;
     }
 }

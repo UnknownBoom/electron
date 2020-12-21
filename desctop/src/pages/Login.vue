@@ -4,15 +4,15 @@
       <div class="col">
         <div class="full-width column wrap justify-start items-center content-center ">
           <q-form class="q-gutter-y-md q-pa-md bg-dark q-mt-lg form-size full-width"
-                  @submit="submit">
-            <vue-recaptcha
-              ref="invisibleRecaptcha"
-              size="invisible"
-              @verify="onVerify"
-              :sitekey="sitekey"
-              @error="onError"
-            >
-            </vue-recaptcha>
+                  @submit="onVerify">
+<!--            <vue-recaptcha-->
+<!--              ref="invisibleRecaptcha"-->
+<!--              size="invisible"-->
+<!--              @verify="onVerify"-->
+<!--              :sitekey="sitekey"-->
+<!--              @error="onError"-->
+<!--            >-->
+<!--            </vue-recaptcha>-->
             <div class="col text-center text-white text-h4" >Authorization</div>
             <div class="col">
               <q-input
@@ -40,7 +40,7 @@
               <q-btn label="Submit" type="submit" class="float-right" color="grey-9"/>
             </div>
             <div class="col">
-              <div class="text-red text-h5">
+              <div class="text-h5" :class="{'text-green': !isError, 'text-red':isError}">
                 {{error}}
               </div>
             </div>
@@ -53,6 +53,7 @@
 
 <script>
   import VueRecaptcha from 'vue-recaptcha'
+  import {mapActions,mapGetters} from 'vuex'
   export default {
     name: "Login",
     components:{ VueRecaptcha},
@@ -63,21 +64,37 @@
           password:''
         },
         error:'',
+        isError:true,
         sitekey:'6LdnRg4aAAAAAKlh9vYmhAzSsqI3e4u0lLVVU5re'
       }
     },
+    computed:{
+      ...mapGetters(['isLogined'])
+    },
     methods:{
+      ...mapActions(['LoginAction']),
       onVerify(response){
-        this.$refs.invisibleRecaptcha.reset()
-        this.$axios.post('/auth',this.user)
+        // this.$refs.invisibleRecaptcha.reset()
+        // this.$axios.post('/auth',this.user)
+        //   .then(t=>{
+        //     this.error = ''
+        //     console.log(t.data)
+        //     this.LoginAction(t)
+        //
+        //   })
+        //   .catch(e=>{
+        //     console.log(e)
+        //     this.error = e.response.data.message
+        //   })
+        this.LoginAction(this.user)
           .then(t=>{
-            this.error = ''
-            console.log(t)
+            this.isError = false
+            this.error = t
             this.$router.push("/")
-          })
-          .catch(e=>{
-            console.log(e)
-            this.error = e.response.data.message
+        })
+          .catch(t=>{
+            this.isError = true
+            this.error = t
           })
       },
       onError(){
@@ -87,6 +104,9 @@
       submit(){
         this.$refs.invisibleRecaptcha.execute()
       }
+    },
+    beforeMount() {
+      if(this.isLogined) this.$router.push("/")
     }
   }
 </script>
